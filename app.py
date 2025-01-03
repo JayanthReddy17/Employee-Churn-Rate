@@ -4,8 +4,6 @@ import pandas as pd
 
 app = Flask(__name__)
 
-
-
 with open('pipeline.pkl', 'rb') as f:
     pipeline = pickle.load(f)
 
@@ -39,14 +37,18 @@ def predict():
         'salary': [salary]
     })
 
+    # Predict the outcome
     result = pipeline.predict(sample)
 
     if result == 1:
         prediction = "An employee may leave the organization."
+        color = "red"  # Background color for "leave"
     else:
         prediction = "An employee may stay with the organization."
+        color = "green"  # Background color for "stay"
 
-    return render_template('result.html', prediction=prediction)
+    # Pass prediction and color to the template
+    return render_template('result.html', prediction=prediction, color=color)
 
 if __name__ == '__main__':
     app.run(debug=True)
